@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const STEPS = [
+  { text: "Loading Princess Data...", icon: "👑", color: "#ff69b4" },
+  { text: "✓ Smile Detected", icon: "😊", color: "#ff69b4" },
+  { text: "✓ Happiness Detected", icon: "🌸", color: "#e6b8a2" },
+  { text: "✓ Sweetness Detected", icon: "💕", color: "#ff69b4" },
+  { text: "✓ Special Person Detected", icon: "⭐", color: "#e6b8a2" },
+  { text: "Access Granted ❤️", icon: "🔓", color: "#ff4da6" },
+];
+
 const LoadingScreen = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [hearts, setHearts] = useState([]);
-
-  const steps = [
-    { text: "Loading Princess Data...", icon: "👑", color: "#ff69b4" },
-    { text: "✓ Smile Detected", icon: "😊", color: "#ff69b4" },
-    { text: "✓ Happiness Detected", icon: "🌸", color: "#e6b8a2" },
-    { text: "✓ Sweetness Detected", icon: "💕", color: "#ff69b4" },
-    { text: "✓ Special Person Detected", icon: "⭐", color: "#e6b8a2" },
-    { text: "Access Granted ❤️", icon: "🔓", color: "#ff4da6" },
-  ];
 
   useEffect(() => {
     // Create floating hearts
@@ -32,15 +32,15 @@ const LoadingScreen = ({ onComplete }) => {
     const stepInterval = setInterval(() => {
       step += 1;
       setCurrentStep(step);
-      setProgress((step / steps.length) * 100);
-      if (step >= steps.length) {
+      setProgress((step / STEPS.length) * 100);
+      if (step >= STEPS.length) {
         clearInterval(stepInterval);
         setTimeout(onComplete, 1000);
       }
     }, 700);
 
     return () => clearInterval(stepInterval);
-  }, []);
+  }, [onComplete]);
 
   return (
     <motion.div
@@ -122,7 +122,7 @@ const LoadingScreen = ({ onComplete }) => {
 
         {/* Steps */}
         <div className="w-full space-y-3">
-          {steps.map((step, index) => (
+          {STEPS.map((step, index) => (
             <AnimatePresence key={index}>
               {currentStep > index && (
                 <motion.div
@@ -144,7 +144,7 @@ const LoadingScreen = ({ onComplete }) => {
                   >
                     {step.text}
                   </span>
-                  {index === steps.length - 1 && currentStep > index && (
+                  {index === STEPS.length - 1 && currentStep > index && (
                     <motion.div
                       className="ml-auto"
                       animate={{ scale: [1, 1.3, 1] }}
